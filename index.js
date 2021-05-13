@@ -1,20 +1,69 @@
 let modalIsShowing = false;
 let modalHasOpened = false;
+let jumpDone = false
+let imgSize = 'q';
 
-function Jump(){
-    let jumper = document.getElementById("jumper");
-    jumper.setAttribute("id", "jumpUp");
-    return true;
+function Jump() {
+    if(jumpDone ==false) {
+            let jumper = document.getElementById("jumper");
+            jumper.setAttribute("id", "jumpUp");
+            return true;
+    }
 }
 
+document.querySelector('#textArea').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        console.log("enter pressed");
+        getUserinput();
+    }
+});
+
 async function getUserinput() {
-    let input = document.getElementById("textArea").value;       
-    let jumpDone = Jump();
-    console.log("hej");
-    searchFrase = document.getElementById("textArea").value;
-    btn.setAttribute("value", "undo")
-    console.log(searchFrase)
-    buildResultsOnToPage(await getImages(20, "cat", 1), imgSize);
+
+    let searchFrase = document.getElementById("textArea").value;   
+    let sortArg = document.getElementById("sort").value;
+    let hitsPerPage = document.getElementById("imgPerPage").value;
+
+    if (searchFrase == "" | sortArg == "" | hitsPerPage == "" ){
+        
+        let alert = document.createElement("h1");        
+        let aDiv = document.getElementById("aDiv");
+        alert.setAttribute("class", "alert");
+        
+        console.log("a field(s) is empty");
+
+        alert.innerHTML = "- Please provide content for all three fields -"; 
+        aDiv.appendChild(alert);
+
+
+    }else{
+        let theAlert = document.querySelectorAll(".alert");
+        let oldResults = document.querySelectorAll(".imgResult");
+        if ( theAlert != null){
+            console.log("alert inte null")
+            theAlert.forEach(element => {
+                element.remove();
+            });
+        }
+        if ( oldResults != null){
+            console.log("imgResult inte null")
+            oldResults.forEach(element => {
+                element.remove();
+            });
+        }
+        jumpDone = Jump();
+        console.log("hej");
+        
+        console.log("searchfrase " + searchFrase);
+        console.log("sortArg " + sortArg);
+        console.log("hitsPerPage " + hitsPerPage);
+
+
+        buildResultsOnToPage(await getImages(searchFrase, 1, sortArg, hitsPerPage), imgSize);
+        
+
+    }
+
 }
 
 function Test(){
@@ -39,12 +88,15 @@ function newFrase(){
 //main.style.backgroundImage = `url('${choseBGImg()}')`;
 
 
-let imgSize = 'q';
+
 
 
 let closeModalClick = document.querySelector("html");
 
-closeModalClick.addEventListener("click", async function(){
+closeModalClick.addEventListener("click", function(){
+
+    console.log("Before if in closeModalClick.addEventListener");
+    
     if (modalIsShowing == true & modalHasOpened == true){
     closeModal();
     }else if (modalIsShowing == true){
@@ -53,24 +105,13 @@ closeModalClick.addEventListener("click", async function(){
         return;
     } 
  });
-const btn = document.querySelector(".material-icons");
 
-// btn.addEventListener("click", async function(){
-
-
-
-
-
-
-
-// });
-
-async function getImages(IMGsPerPage, searchFrase, pageIndex){
+async function getImages(searchFrase, pageIndex, sortArg, hitsPerPage ){
 
     const apiKey = "7d22d22981732cf9eb8d3d8920f60f89"
     //searchFrase = searchFrase.replace(" ","%20");
 
-    const URL_2 = `https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=${apiKey}&text=${searchFrase}&page=${pageIndex}&per_page=20&sort=relevance&format=json&nojsoncallback=1`;
+    const URL_2 = `https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=${apiKey}&text=${searchFrase}&page=${pageIndex}&per_page=${hitsPerPage}&sort=${sortArg}&format=json&nojsoncallback=1`;
 
     
 
@@ -118,30 +159,59 @@ function buildResultsOnToPage(photoArray, imgSize){
     console.log(photoArray);
     let imgSizeOnThisPage = imgSize;
     let imgIndexOnPage = 1;
-    photoArray.forEach(photo => {
+    
+    if(photoArray.length == 0){
 
+        let noResult = document.createElement("h1");        
+        let aDiv = document.getElementById("aDiv");
+        noResult.setAttribute("class", "alert");
+        
+        console.log("noResult");
+
+        noResult.innerHTML = "- Sorry, your search came up empty -"; 
+        aDiv.appendChild(noResult);
+
+    }else if(photoArray.length == 0){
+
+    }else{
+    photoArray.forEach(photo => {
 
       let imgURL = imgUrlBuilder(photo, imgSizeOnThisPage);
 
       let aDiv = document.getElementById("aDiv");
 
       const imgObject = document.createElement("IMG");
+
+      
       imgObject.setAttribute("src", imgURL);
       imgObject.setAttribute("class", "imgResult")
       imgObject.setAttribute("id", imgIndexOnPage);
-     // if ( document.getElementById("theModal").style.display == "none"){
-       // imgObject.setAttribute("onclick", `openModal(${imgIndexOnPage})`);
-      //}
-      //else{
-       // console.log(imgURL);
-        imgObject.setAttribute("onclick", `openModal(${imgURL})`);
-      //}
+      imgObject.setAttribute("onclick", `openModal(${imgURL})`);
       console.log(imgObject);
+
+      
+      imgObject.addEventListener("click", function(){
+
+        if (modalIsShowing == true & modalHasOpened == true){
+            closeModal();
+            console.log("modalIsShowing == true & modalHasOpened == true");
+        }else if (modalIsShowing == true){
+            modalHasOpened = true;
+            console.log("modalIsShowing == true");
+        }else if(modalIsShowing == false){
+            console.log("openModal");
+        openModal(imgURL);
+        } 
+
+        });
+
+
       aDiv.appendChild(imgObject);
 
       imgIndexOnPage++;
-    });
+    });}
 };
+
 
 function ramdomBgPicker(imgArray, imgSize){
 
@@ -165,22 +235,33 @@ function imgUrlBuilder(photo, imgSize){
     const secret = photo.secret;
     const imgURL = `https://farm${farmId}.staticflickr.com/${serverId}/${id}_${secret}_${imgSize}.jpg`;
 
+    console.log("befour return imgURL, imgURLBuilder"); 
 
     return imgURL;
 
 }
 
 // Open the Modal
-function openModal(imgIndexOnPage) {
+function openModal(imgURL) {
 
-    
+    console.log(imgURL);
 
+    bigImgURL = imgURL.replace("q.jpg", "c.jpg");
 
+    console.log(bigImgURL);
 
+    let modal = document.getElementById("theModal");
 
+    console.log(modal);
 
-    document.getElementById("theModal").style.display = "flex";
-    console.log("modal showing")
+    let modalImage = document.getElementById("insideModal");
+
+    console.log(modalImage);
+
+    modalImage.style.backgroundImage = `url(${bigImgURL})`;
+    modal.style.display = "block";
+    modalImage.style.display = "block";
+    console.log(imgURL);
     modalIsShowing = true;
 }
   
