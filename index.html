@@ -14,21 +14,49 @@
 </head>
 
 
+<div id="theModal">
+    <div id="insideModal"></div>
+</div>
 <body>
-    <div id="theModal"></div>
     <div id="jumper">
-        <form id="searchBiArea" name="searchForm">
+        <div id="searchBiArea" name="searchForm">
             <div class="searchBox">
                 <input id="textArea" type="text" placeholder="Enter frase....." tabindex="1" required >
-                    <input type="submit" value="search" class="material-icons" name="Submit"  onclick="getUserinput();"/>
-
-       
+                <input type="button" value="search" class="material-icons" name="Submit"  onclick="getUserinput();"/> 
             </div>
-        </form>
+            <div id="curtainsArea">
+                <div class="curtainsBiarea">
+                    <select class="curtin" id="sort"  required tabindex="2">Sort
+                        <option value="" disabled selected hidden>Sort</option>
+                        <option value="relevance" >Relevance</option>
+                        <option value="date-posted-desc" >Uploaded</option>
+                        <option value="date-taken-desc" >Photo taken</option>
+                        <option value="interestingness-desc" >Intresting</option>
+                    </select>
+                </div>
+                <!-- date-posted-asc, date-posted-desc, date-taken-asc, date-taken-desc, interestingness-desc, interestingness-asc, and relevance. -->
+                <div class="curtainsBiarea">
+                    <select class="curtin" id="imgPerPage"  required tabindex="3">Sort
+                        <option value="" >hits per page</option>
+                        <option value="20" >20</option>
+                        <option value="50" >50</option>
+                        <option value="100" >100</option>
+                        <option value="1" >I Feel Lucky</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
        
         <!-- <form id="searchBiArea" name="searchForm">
             <div class="searchBox">
-                
+                prevent default
+
+                gurpera onclick längst upp
+                viktiga fiunktioner först
+
+
+
                     <input type="submit" value="search" class="material-icons" name="Submit">
             
             </div>
