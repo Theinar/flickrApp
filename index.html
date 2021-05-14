@@ -1,7 +1,35 @@
+<!-- --------------------------------------------------------------------------------------------------
+
+Flickr App by Einar Ólafsson - SUT20
+
+The app is an assignment was given by frontend development teacher Marcus Johansson (http://mji.se/)
+
+the assignment was to make an flickr.com search-app using the flick API.
+
+The should haves was:
+
+ - using HTML, CSS (incl flexbox) and vanilla JS
+ - make an image search using “text search”
+ - display the search result in a nice gallery form
+ - show clicked image in larger size (eg lightbox effect)
+
+the could haves was:
+
+ - more functionality based on the method's arguments, ex. sorting hits per page
+ - pagnation functionality where you can browse between different pages of search results
+ - error handling where the error code is communicated to the user
+
+ I added a few like animations and querks for styling and estetics
+
+                                ///Kind regards Einar Ólafsson - https://github.com/Theinar
+
+
+-----Start variables---------------------------------------------------------- -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- fairly standard meta tag with added fonts for use in icons and such -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +38,24 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Flickr App</title>
 </head>
 
-
-<div id="theModal">
+<!-- the modal is placed in highest up in DOM tree to ensure that it covers al elements then shown  -->
+<div id="theModal">    
+    <!-- insideModal is where picture is shown -->
     <div id="insideModal"></div>
 </div>
 <body>
+    <!-- jumper is the larger area around searchbox that jumps on search -->
     <div id="jumper">
         <div id="searchBiArea" name="searchForm">
             <div class="searchBox">
+                <!-- the text box where user submits input anb button which submits it -->
                 <input id="textArea" type="text" placeholder="Enter frase....." tabindex="1" required >
                 <input type="button" value="search" class="material-icons" name="Submit"  onclick="getUserInput();"/> 
             </div>
+             <!-- curtains/dropdowns for user options; sort  and hits per page  -->
             <div id="curtainsArea">
                 <div class="curtainsBiarea">
                     <select class="curtin" id="sort"  required tabindex="2">Sort
@@ -34,7 +66,6 @@
                         <option value="interestingness-desc" >Intresting</option>
                     </select>
                 </div>
-                <!-- date-posted-asc, date-posted-desc, date-taken-asc, date-taken-desc, interestingness-desc, interestingness-asc, and relevance. -->
                 <div class="curtainsBiarea">
                     <select class="curtin" id="imgPerPage"  required tabindex="3">Sort
                         <option value="" >hits per page</option>
@@ -44,30 +75,17 @@
                         <option value="1" >I Feel Lucky</option>
                     </select>
                 </div>
-
             </div>
-        </div>
-       
-        <!-- <form id="searchBiArea" name="searchForm">
-            <div class="searchBox">
-                prevent default
-
-                gurpera onclick längst upp
-                viktiga fiunktioner först
-
-
-
-                    <input type="submit" value="search" class="material-icons" name="Submit">
-            
-            </div>
-        </form> -->
+        </div>       
     </div>
+    <!-- aDiv is the "main div", the element in which results and mesages gets displayed -->
     <div id="aDiv"></div>
+    <!-- pageUtilArea is the litle box there page info and page navigation buttons are placed -->
+    <!-- all these elements have a type of "fade in fade out" effect on mouse-enter-or-leave event -->
     <div id="pageUtilArea" onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)">
         <div id="pageUtil"></div>
-        <!-- <input  type="button" id="pageUtilarrowLeft" onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)" class="material-icons"  value="navigate_before"/>
-        <input  type="button" id="pageUtilarrowRight"  onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)" class="material-icons"  value="keyboard_arrow_right"/> -->
-        <input type="button"  
+            <!-- the buttons   -->
+           <input type="button"  
             id="pageUtilarrowLeft" 
             value="navigate_before" 
             class="material-icons" 
@@ -87,5 +105,6 @@
     </div>
 
 </body>
+<!-- the javaScript -->
 <script src="index.js"></script>
 </html>
