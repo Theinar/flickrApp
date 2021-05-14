@@ -22,7 +22,7 @@
         <div id="searchBiArea" name="searchForm">
             <div class="searchBox">
                 <input id="textArea" type="text" placeholder="Enter frase....." tabindex="1" required >
-                <input type="button" value="search" class="material-icons" name="Submit"  onclick="getUserinput();"/> 
+                <input type="button" value="search" class="material-icons" name="Submit"  onclick="getUserInput();"/> 
             </div>
             <div id="curtainsArea">
                 <div class="curtainsBiarea">
@@ -63,6 +63,29 @@
         </form> -->
     </div>
     <div id="aDiv"></div>
+    <div id="pageUtilArea" onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)">
+        <div id="pageUtil"></div>
+        <!-- <input  type="button" id="pageUtilarrowLeft" onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)" class="material-icons"  value="navigate_before"/>
+        <input  type="button" id="pageUtilarrowRight"  onmouseenter="mouseIn(event)" onmouseleave="mouseOut(event)" class="material-icons"  value="keyboard_arrow_right"/> -->
+        <input type="button"  
+            id="pageUtilarrowLeft" 
+            value="navigate_before" 
+            class="material-icons" 
+            name="Submit" 
+                onmouseenter="mouseIn(event)" 
+                onmouseleave="mouseOut(event)"
+                onclick="clickBack(event)"/>
+        <input type="button" 
+            id="pageUtilarrowRight" 
+            value="keyboard_arrow_right" 
+            class="material-icons" 
+            name="Submit" 
+                onmouseenter="mouseIn(event)" 
+                onmouseleave="mouseOut(event)"
+                onclick="clickForward(event)"/>
+        <div id="pageUtilUnder"></div>
+    </div>
+
 </body>
 <script src="index.js"></script>
 </html>
