@@ -37,98 +37,90 @@ let pageIndex = 1;
 let response;
 let data;
 
-/*-----EventListeners----------------------------------------------------------*/
+/*-----EventListeners and onclick functions------------------------------------*/
 
-/*-----Methodes for geting and validating user input---------------------------*/
-
-/*-----Methodes for fetching and building content------------------------------*/
-
-/*-----Methodes for fetching content-------------------------------------------*/
-
-
+/*clickForward and clickBack are click events for page switch buttons */
 
 async function clickForward(event){
 
-    let pageUtilarrowLeft = document.getElementById("pageUtilarrowLeft");    
+    // Selecting element
+    let pageUtilarrowLeft = document.getElementById("pageUtilarrowLeft");       
     
-    
+    // Cleares result area from eather old results or 
     clearResultArea();
+
+    // A next paige search should onley be possible if there ar more results to fetch 
     if(pageIndex < data.photos.pages) {
         pageIndex++;
-        pageUtilarrowLeft.style.display = "flex";
+        pageUtilarrowLeft.style.display = "flex"; // Shows button if it was hidden befour
+
+        // Fethches and builds ne search results
         buildResultsOnToPage(await getImages(searchFrase, pageIndex, sortArg, hitsPerPage), imgSizeResult, hitsPerPage);
     }
+    // Hides button if there are no next page too fethch
     if (pageIndex >= data.photos.pages) {
        event.target.style.display = "none";
     }
 
 }
 async function clickBack(event){
+
+    // Selecting elemen
+    let pageUtilarrowRight = document.getElementById("pageUtilarrowRight");   
+
+    // Cleares result area from eather old results or 
     clearResultArea();
+
+    // A previous paige search should onley be possible if there ar more results to fetch 
     if(pageIndex > 1) {
         pageIndex--;
+        pageUtilarrowRight.style.display = "flex";
         buildResultsOnToPage(await getImages(searchFrase, pageIndex, sortArg, hitsPerPage), imgSizeResult, hitsPerPage);
     }
+    // Hides button if there are no previous page too fethch
     if (pageIndex <= 1) {
        event.target.style.display = "none";
     }
 }
 
-let pageUtilarrowLeft = document.getElementById("pageUtilarrowLeft");
+/*MouseIn and MouseOut are hoverover effects for PageUtilArea */
 
 function mouseIn( event ) {
-    event.target.style.transition = "1s";
+
+    // Some inline styling triggered on event
+    event.target.style.transition = "0.5s";
     event.target.style.color = "brown";
     event.target.style.background = "rgba(0, 0, 0, 0.8)";
     console.log("mouseenter");
-    console.log(event.target.style.transition);
-    console.log(event.target.style.background);
-    console.log(event.target.style.color);
-
 }
 function mouseOut( event ) {
-    event.target.style.transition = "1s";
+    
+    // Some inline styling triggered on event
+    event.target.style.transition = "0.5s";
     event.target.style.color = "rgba(0, 0, 0, 0.2)";
     event.target.style.background = "rgba(0, 0, 0, 0.1)"
-    console.log("mouseenter");
-    console.log(event.target.style.transition);
-    console.log(event.target.style.background);
-    console.log(event.target.style.color);
-
+    console.log("mouseout");
 }
 
-// pageUtil.addEventListener("mouseenter", function( event ) {
-//     event.target.style.transition = "1s";
-//     event.target.style.color = "rgb(255, 255, 255)";
-//     console.log("mouseenter");
-//     console.log(event.target.style.transition);
-//     console.log(event.target.style.background);
-//     console.log(event.target.style.color);
+//Selecting element to add event listener to
+let closeModalClick = document.querySelector("html");
 
+// A eventlistener that listens to click all over the page but only triggers when lightbox is visible
+closeModalClick.addEventListener("click", function(){
 
+    console.log("Before if in closeModalClick.addEventListener");
 
-// });
-
-// pageUtil.addEventListener("mouseout", function( event ) {
-//     event.target.style.transition = "1s";
-//     event.target.style.color = "rgba(0, 0, 0, 0.2)";
-//     console.log("mouseout");
-//     console.log(event.target.style.transition);
-//     console.log(event.target.style.background);
-//     console.log(event.target.style.color);
-
-
-
-// });
-
-function Jump() {
-    if(jumpDone ==false) {
-            let jumper = document.getElementById("jumper");
-            jumper.setAttribute("id", "jumpUp");
-            return true;
+    // Code to ensure if LightBox is open or closed and acting oppon that
+    if (modalIsShowing == true & modalHasOpened == true){
+    closeModal();
+    }else if (modalIsShowing == true){
+        modalHasOpened = true;
+    }else if(modalIsShowing == false){
+        return;
     }
-}
+ });
 
+ // Event listener for key press "Enter" to submit results
 document.querySelector('#textArea').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         console.log("enter pressed");
@@ -136,14 +128,18 @@ document.querySelector('#textArea').addEventListener('keypress', function (e) {
     }
 });
 
+/*-----Methodes for geting and validating user input---------------------------*/
+
 function getUserInput() {
 
     console.log("First in getUserInput")
+
+    //Saves input from user in variables
     searchFrase = document.getElementById("textArea").value;
     sortArg = document.getElementById("sort").value;
     hitsPerPage = document.getElementById("imgPerPage").value;
-    console.log("asdfdg")
 
+    // Validates info from user and sends Message if info is incomplete
     if (searchFrase == "" | sortArg == "" | hitsPerPage == "") {
 
         let alert = document.createElement("h1");
@@ -157,10 +153,32 @@ function getUserInput() {
 
 
     } else {
+
+        // Sends validated info to next function in chain
         useUserInput(searchFrase, sortArg, hitsPerPage);
     }
 }
 
+// useUserInput clears searchresult area and triggers animation and starts fetching and building the results 
+async function useUserInput(searchFrase, sortArg, hitsPerPage) {
+
+    clearResultArea();
+
+    // triggers Jump animation, jump returns boolean to ensure this only happens ones
+    jumpDone = Jump();
+
+    console.log("searchfrase " + searchFrase);
+    console.log("sortArg " + sortArg);
+    console.log("hitsPerPage " + hitsPerPage);
+
+
+    buildResultsOnToPage(await getImages(searchFrase, pageIndex, sortArg, hitsPerPage), imgSizeResult, hitsPerPage);
+
+}
+
+/*-----Methodes for clearing, fetching and building content------------------------------*/
+
+// guess what is does
 function clearResultArea(){
 
     let theAlert = document.querySelectorAll(".alert");
@@ -179,60 +197,11 @@ function clearResultArea(){
     }
 }
 
-async function useUserInput(searchFrase, sortArg, hitsPerPage) {
-    console.log("asdfdg2")
 
-    clearResultArea();
-
-    jumpDone = Jump();
-    console.log("hej");
-
-    console.log("searchfrase " + searchFrase);
-    console.log("sortArg " + sortArg);
-    console.log("hitsPerPage " + hitsPerPage);
-
-
-    buildResultsOnToPage(await getImages(searchFrase, pageIndex, sortArg, hitsPerPage), imgSizeResult, hitsPerPage);
-
-}
-
-// async function setBGimg(){
-//     let imgUrl = await choseBGImg();
-//     console.log(imgUrl);
-//     return imgUrl;
-// }
-
-// let bgImgUrl = setBGimg();
-// console.log(bgImgUrl);
-// let main = document.getElementsByTagName("main");
-
-// console.log(main);
-//main.setAttribute("background-image", `${choseBGImg()}`) ;
-//main.style.backgroundImage = `url('${choseBGImg()}')`;
-
-
-
-
-
-let closeModalClick = document.querySelector("html");
-
-closeModalClick.addEventListener("click", function(){
-
-    console.log("Before if in closeModalClick.addEventListener");
-
-    if (modalIsShowing == true & modalHasOpened == true){
-    closeModal();
-    }else if (modalIsShowing == true){
-        modalHasOpened = true;
-    }else if(modalIsShowing == false){
-        return;
-    }
- });
-
+// Uses the input form user and takes API key to build URL, fetch results, parses it to JSON whitch gest returned 
 async function getImages(){
 
     const apiKey = "7d22d22981732cf9eb8d3d8920f60f89"
-    //searchFrase = searchFrase.replace(" ","%20");
 
     const URL_2 = `https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=${apiKey}&text=${searchFrase}&page=${pageIndex}&per_page=${hitsPerPage}&sort=${sortArg}&format=json&nojsoncallback=1`;
 
@@ -248,61 +217,41 @@ async function getImages(){
 
 };
 
-async function choseBGImg(){
-
-    const dateNow = new Date();
-    const thisMounth = dateNow.getMonth();
-    const today = dateNow.getDay();
-    let searchFrase = "";
-
-    if(thisMounth < 3){
-        searchFrase = "background vinter";
-    }else if(thisMounth < 6){
-        searchFrase = "background spring";
-    }else if(thisMounth < 9){
-        searchFrase = "background summer";
-    }else if(thisMounth > 11){
-        searchFrase  = "background fall";
-    }else{
-        searchFrase  = "background christmas";
-    }
-
-    let imgArray = await getImages(5,searchFrase);
-    let pickedIMGURL = ramdomBgPicker(imgArray, 'c');
-    console.log(pickedIMGURL)
-    return pickedIMGURL
-};
-
+// Uses the JSON object from getImages and builds separate URLs for each img and builds it on to page
+// Sets info in pageUtilElements and hides/shows button according to circumstances 
 function buildResultsOnToPage(searchJSONObject, imgSize, hitsPerPage){
 
-
+    // saves only the photo array element for simplicity
     const photoArray = searchJSONObject.photos.photo;
     console.log(photoArray);
-    let imgSizeOnThisPage = imgSize;
+    // counter for number of elements in results
     let objectIndexOnPage = 1;
 
+    //Selects elements which contains text info in pageUtilArea
     let pageUtil = document.getElementById("pageUtil");
     let pageUtilUnder = document.getElementById("pageUtilUnder");
 
+    // Updates text info according to search results
     pageUtil.innerHTML = `${hitsPerPage * searchJSONObject.photos.page - hitsPerPage + 1 }-
     ${hitsPerPage * searchJSONObject.photos.page - hitsPerPage + photoArray.length }<br/>of ${searchJSONObject.photos.total} photos<br>`;
     
     pageUtilUnder.innerHTML = `page: ${searchJSONObject.photos.page} of ${searchJSONObject.photos.pages} `
     
+    // Shows pageUtilArea if hidden
     pageUtilArea.style.display = "flex";
 
+    // Shows Right button if there are more results after this page
     if (searchJSONObject.photos.total > hitsPerPage) {
 
         console.log(searchJSONObject.photos.page);
 
-        let pageUtilarrowLeft = document.getElementById("pageUtilarrowLeft");
         let pageUtilarrowRight = document.getElementById("pageUtilarrowRight");
 
-        //pageUtilarrowLeft.style.display = "flex";
         pageUtilarrowRight.style.display = "flex";
         console.log(pageUtilArea);
     }
 
+    // Displays message to user if the results came up empty
     if(photoArray.length == 0){
 
         let noResult = document.createElement("h1");
@@ -314,27 +263,31 @@ function buildResultsOnToPage(searchJSONObject, imgSize, hitsPerPage){
         noResult.innerHTML = "- Sorry, your search came up empty -";
         aDiv.appendChild(noResult);
 
-    }else if(photoArray.length == 0){
-
     }else{
+
+    // If there are results to show elements gets created and displayed
     photoArray.forEach(photo => {
 
-      let imgURL = imgUrlBuilder(photo, imgSizeOnThisPage);
+        // Builds specific url based on api results
+      let imgURL = imgUrlBuilder(photo, imgSize);
 
+      // selects where imgs will be appended
       let aDiv = document.getElementById("aDiv");
 
+      // saves new element in variable
       const imgObject = document.createElement("IMG");
 
-
+      // setting atributes to newly created element
       imgObject.setAttribute("src", imgURL);
       imgObject.setAttribute("class", "imgResult")
       imgObject.setAttribute("id", objectIndexOnPage);
       imgObject.setAttribute("onclick", `openModal(${imgURL})`);
       console.log(imgObject);
 
-
+      // creates EventListener to eatch element so that each img is clickeble
       imgObject.addEventListener("click", function(){
 
+        // logic for opening or closing Lightbox/modal and sub,itting speciffic URL
         if (modalIsShowing == true & modalHasOpened == true){
             closeModal();
             console.log("modalIsShowing == true & modalHasOpened == true");
@@ -348,28 +301,13 @@ function buildResultsOnToPage(searchJSONObject, imgSize, hitsPerPage){
 
         });
 
-
       aDiv.appendChild(imgObject);
 
       objectIndexOnPage++;
     });}
 };
 
-
-function ramdomBgPicker(imgArray, imgSize){
-
-    console.log(imgArray);
-    console.log(imgArray.length);
-    console.log(imgSize);
-
-    let random = Math.floor(Math.random() * 20);
-    console.log(random);
-    let imgURL = imgUrlBuilder(imgArray[random], imgSize);
-    console.log(imgURL);
-    return imgURL;
-
-}
-
+// takes photo JSON and imgsize to build specific URL  
 function imgUrlBuilder(photo, imgSize){
 
     const id = photo.id;
@@ -384,83 +322,100 @@ function imgUrlBuilder(photo, imgSize){
 
 }
 
+/*-----Methodes for Modal/LightBox-------------------------------------------*/
+
 // Open the Modal
 function openModal(imgURL) {
 
     console.log(imgURL);
 
+    // Changes URL to different sized picture URL to propperly fit Lightbox/modal
     bigImgURL = imgURL.replace("q.jpg", "c.jpg");
 
     console.log(bigImgURL);
 
+    // selecting modal/lightbox element
     let modal = document.getElementById("theModal");
 
     console.log(modal);
 
+    // selecting element where modal img will be shown
     let modalImage = document.getElementById("insideModal");
 
     console.log(modalImage);
 
+    // Changes styling to nicely show lightBox with picture
     modalImage.style.backgroundImage = `url(${bigImgURL})`;
     modal.style.display = "block";
     modalImage.style.display = "block";
     console.log(imgURL);
+    // boolean used by eventlisteners to determinat action
     modalIsShowing = true;
+
 }
 
   // Close the Modal
   function closeModal() {
     document.getElementById("theModal").style.display = "none";
     console.log("modal closing")
+    // booleans used by eventlisteners to determinat action
     modalIsShowing = false;
     modalHasOpened = false;
 
 }
 
+/*-----Jump animation func and other funcs to be continued next time--------------*/
+function Jump() {
+    if(jumpDone ==false) {
+            let jumper = document.getElementById("jumper");
+            jumper.setAttribute("id", "jumpUp");
+            return true;
+    }
+}
 
-// document.body.onload = addElement;
+//-------------------------not implemented in v1.0------------------------------
+// // funcs whitch can be used th app evolves and needs a seasonal background images
 
-// function addElement () {
-//   // create a new div element
-//   const newDiv = document.createElement("div");
+// async function choseBGImg(){
 
-//   // and give it some content
-//   const newContent = document.createTextNode("Hi there and greetings!");
+//     const dateNow = new Date();
+//     const thisMounth = dateNow.getMonth();
+//     const today = dateNow.getDay();
+//     let searchFrase = "";
 
-//   // add the text node to the newly created div
-//   newDiv.appendChild(newContent);
+//     if(thisMounth < 3){
+//         searchFrase = "background vinter";
+//     }else if(thisMounth < 6){
+//         searchFrase = "background spring";
+//     }else if(thisMounth < 9){
+//         searchFrase = "background summer";
+//     }else if(thisMounth > 11){
+//         searchFrase  = "background fall";
+//     }else{
+//         searchFrase  = "background christmas";
+//     }
 
-//   // add the newly created element and its content into the DOM
-//   const currentDiv = document.getElementById("div1");
-//   document.body.insertBefore(newDiv, currentDiv);
-//}
-//   const nameParagraph = document.querySelector(".name")
-//   const eyeColorParagraph = document.querySelector(".eye-color")
-//   const heightParagraph = document.querySelector(".height")
-//   const massParagraph = document.querySelector(".mass")
-//   const filmsList = document.querySelector(".films")
+//     let imgArray = await getImages(5,searchFrase);
+//     let pickedIMGURL = ramdomBgPicker(imgArray, 'c');
+//     console.log(pickedIMGURL)
+//     return pickedIMGURL
+// };
 
-//   nameParagraph.innerText = data.name
-//   eyeColorParagraph.innerText = data.eye_color
-//   heightParagraph.innerText = data.height
-//   massParagraph.innerText = data.mass
 
-//   // for(let i = 0; i < data.films.length; i++){
-//   //   const film = data.films[i]
-//   // }
-//   for(let film of data.films){
-//     const li = document.createElement("li")
-//     li.innerText = film
-//     filmsList.append(li)
-//  }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
-  async function demo() {
-    await sleep(5000);
 
-  }
+// function ramdomBgPicker(imgArray, imgSize){
 
-  demo();
+//     console.log(imgArray);
+//     console.log(imgArray.length);
+//     console.log(imgSize);
+
+//     let random = Math.floor(Math.random() * 20);
+//     console.log(random);
+//     let imgURL = imgUrlBuilder(imgArray[random], imgSize);
+//     console.log(imgURL);
+//     return imgURL;
+
+// }
+
 
