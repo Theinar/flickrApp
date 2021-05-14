@@ -3,6 +3,8 @@
 }
 
 /*---------------------------->principal elements<-----------------------*/
+
+
 html {
 
     min-width: 600px;
@@ -24,7 +26,47 @@ body{
     width: 100%;
 
 }
+
+#aDiv {/* the box which holds the actual results or error messages*/
+    padding-top: 5rem;
+    display: flex;
+    flex-wrap:wrap;
+    width: 70%;
+    max-width: 1200px;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+}
+.imgResult {
+    display: flex;
+    flex: 1 0 19%;
+    margin: 5px;
+    flex-grow: initial;
+
+}
+.imgResult:hover {
+
+    -webkit-transform: scale(1.03);
+    -webkit-transition-duration: 0.5s;
+    -webkit-transition:ease-in-out;
+}
+
+@keyframes bounce {/*arguments concerning bounce*/
+
+    from {
+        height: 80%;
+    }
+    
+    to {
+        height: 40%;
+    }
+    
+}
+
+
 /*------------------->elements in and around searchBox area<------------------------*/
+
+
 #searchBiArea {/*Box surounding searchArea*/
 
     display: flex;
@@ -49,7 +91,7 @@ body{
 
 }
 
-#jumpUp {/* this is the id that */
+#jumpUp {/* this is the id whitch the app changes to inorder to trigger JUMP animation */
     display: flex;
     margin: 0;
     width: 100%;
@@ -59,7 +101,7 @@ body{
 }
 
 
-.searchBox{
+.searchBox{/*box surounding searchbar and button*/
 
     display:flex;
     border-width: 2px;
@@ -95,7 +137,8 @@ body{
     outline: none;
 }
 
-.searchBox > .material-icons{/*search button 
+.searchBox > .material-icons{
+    /*search button 
     material-icons is a google font library, a cind of emojis
     and is used by the class name material-icons*/
 
@@ -149,43 +192,10 @@ border: none;
     }
 
 
-#aDiv {/* the box which holds the actual results or error messages*/
-    padding-top: 5rem;
-    display: flex;
-    flex-wrap:wrap;
-    width: 70%;
-    max-width: 1200px;
-    justify-content: center;
-    align-items: center;
-    align-content: flex-start;
-}
-.imgResult {
-    display: flex;
-    flex: 1 0 19%;
-    margin: 5px;
-    flex-grow: initial;
-
-}
-.imgResult:hover {
-
-    -webkit-transform: scale(1.03);
-    -webkit-transition-duration: 0.5s;
-    -webkit-transition:ease-in-out;
-}
-
-@keyframes bounce {
-
-    from {
-        height: 80%;
-    }
+/*----------------------->LightBox elements<-----------------------------------*/
     
-    to {
-        height: 40%;
-    }
-    
-}
 
-#theModal{
+#theModal{/*lightBox*/
     z-index: 1;
     display: none;
     position:fixed;
@@ -196,7 +206,7 @@ border: none;
     box-shadow: inset 0 0 5rem 30rem rgba(0, 0, 0, 0.5);
 
 }
-#insideModal {
+#insideModal {/*lightBox content*/
     background-position: center;
     background-repeat: no-repeat;
     height: 100%;
@@ -204,14 +214,16 @@ border: none;
 
 }
 
-#pageUtilArea {
+/*----------------------->Page Utility elements<-----------------------------------*/
+
+
+#pageUtilArea {/*box containing page result info and page switch buttons*/
     
     display: none;
     margin: 0%;
     justify-content:space-around;
     align-items: center;
-    width: 10%;
-    min-width: 150px;
+    width: 150px;
     bottom: 10%;
     right: 3%;
     position: fixed;
@@ -223,14 +235,14 @@ border: none;
 
 }
 
-#pageUtil {
+#pageUtil {/*box containing page result info*/
     display: flex;
     padding-top: 1rem;
     padding-bottom: 1rem;
   
 }
 
-#pageUtilArea > .material-icons{
+#pageUtilArea > .material-icons{/*box containing switch page buttons*/
 
     padding: 1rem;
     width: 4rem;
