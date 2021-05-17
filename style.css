@@ -248,7 +248,7 @@ border: none;
     width: 4rem;
     display: none;
     justify-content: center;
-    //margin: auto;
+    /* margin: auto; */
     cursor: pointer;
     text-decoration: none;
     border-style: none;
@@ -260,4 +260,123 @@ border: none;
 
 }
 
+@media only screen and (max-width: 900px){
+    
+    html {
+
+        min-width: 300px;
+        display: flex;
+        margin: 0%;
+        background-color: rgb(19, 28, 37);
+        box-shadow: inset 0 0 5rem 1.5rem black;
+        min-height: 100%;
+        padding-bottom: 2rem;
+    
+    }
+    body{
+
+        display: flex;
+        flex-direction:column;
+        align-items: center;
+        margin: 0;
+        height:inherit;
+        width: 100%;
+    
+    }
+    
+    #aDiv {/* the box which holds the actual results or error messages*/
+        padding-top: 0;
+        display: flex;
+        flex-wrap:wrap;
+        width: 100%;
+        max-width: 900px;
+        justify-content: center;
+        align-items: center;
+        align-content: flex-start;
+    }
+
+    /*------------------->elements in and around searchBox area<------------------------*/
+
+
+    #searchBiArea {/*Box surounding searchArea*/
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color:rgba(0, 0, 0, 0.6);
+        max-width: 1200px;
+        min-width: 300px;
+        padding: 4rem 0.5rem 4rem 0.5rem;
+        height: 40%;
+        width: 100%;
+
+    }
+    .searchBox{/*box surounding searchbar and button*/
+
+        display:flex;
+        border-color: black;
+        padding: 0px;
+        background-color: white;
+        text-align: start;
+        font-size: 2rem;
+        align-items: center;
+        
+
+    }
+
+    #textArea {
+
+        display:flex;
+        border: none;
+        margin-left: 0;
+        margin-right: auto;
+        text-align: start;
+        font-size: 2rem;
+        min-width: 80%;
+
+    }
+    #jumper {/*Box surounding searchArea*/
+
+        display: flex;
+        margin: 0;
+        width: 100%;
+        height: 50%;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    #jumpUp {/* this is the id whitch the app changes to inorder to trigger JUMP animation */
+        display: flex;
+        margin: 0;
+
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        animation: bounce 0.5s;
+    }
+
+    .imgResult {
+        display: flex;    
+        flex: 1 0 32%;
+        width: 100%;
+        margin: 2px;
+
+    }
+    h1{
+        color: antiquewhite;
+        padding: 0.5rem;
+    }
+
+    
+    #pageUtilArea > .material-icons{/*box containing switch page buttons*/
+    
+
+        color: rgba(0, 0, 0, 0.4);   
+        background: rgba(0, 0, 0, 0.2);    
+
+    
+    
+    }
+}
 
